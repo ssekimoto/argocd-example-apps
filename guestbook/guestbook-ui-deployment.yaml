@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: guestbook-ui
 spec:
@@ -18,3 +18,11 @@ spec:
         name: guestbook-ui
         ports:
         - containerPort: 80
+  strategy:
+    blueGreen: 
+      activeService: rollout-bluegreen-active
+      previewService: rollout-bluegreen-preview
+      autoPromotionEnabled: true
+      previewReplicaCount: 1
+      autoPromotionSeconds: 300
+      scaleDownDelaySeconds: 30
